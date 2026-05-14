@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>银行树洞 - 纯匿名吐槽举报</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .tips {
+            color: #4CAF50;
+            font-size: 14px;
+        }
+        .tab-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: #1e1e1e;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+        }
+        .tab.active {
+            background: #2196F3;
+        }
+        .content-box {
+            display: none;
+        }
+        .content-box.show {
+            display: block;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            color: #fff;
+            font-size: 15px;
+            resize: none;
+            margin-bottom: 15px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #2196F3;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .tucao-list {
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .tucao-item {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .time {
+            color: #888;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .report-type {
+            width: 100%;
+            padding: 10px;
+            background: #1e1e1e;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏦 银行员工匿名树洞</h1>
+        <p class="tips">✅ 无注册 | ✅ 无登录 | ✅ 不查IP | ✅ 不留痕迹 | ✅ 纯匿名</p>
+    </div>
+
+    <div class="tab-box">
+        <button class="tab active" onclick="switchTab(0)">匿名吐槽</button>
+        <button class="tab" onclick="switchTab(1)">匿名举报</button>
+    </div>
+
+    <!-- 吐槽模块 -->
+    <div class="content-box show" id="tucao">
+        <textarea id="tucaoInput" placeholder="在这里随意吐槽：考核、管理、薪酬、职场PUA... 纯匿名，放心说"></textarea>
+        <button class="btn" onclick="submitTucao()">提交吐槽</button>
+        <div class="tucao-list" id="tucaoList"></div>
+    </div>
+
+    <!-- 举报模块 -->
+    <div class="content-box" id="report">
+        <select class="report-type" id="reportType">
+            <option value="">选择举报类型</option>
+            <option value="薪酬考核">薪酬/考核压榨</option>
+            <option value="管理不公">管理不公/PUA</option>
+            <option value="合规问题">违规业绩/合规问题</option>
+            <option value="职场霸凌">职场霸凌/歧视</option>
+            <option value="其他">其他问题</option>
+        </select>
+        <textarea id="reportInput" placeholder="详细描述情况，可写证据线索（纯匿名，内容仅你自己可见）"></textarea>
+        <button class="btn" onclick="copyReport()">一键复制举报内容（自行安全提交）</button>
+        <p style="color:#ff9800; margin-top:10px; font-size:13px;">⚠️ 静态页面不上传数据，复制后自行发送到安全渠道，绝对不留痕</p>
+    </div>
+
+    <div class="footer">
+        <p>📢 隐私承诺：本页面仅运行在你的浏览器中，不收集任何信息，不存储数据，关闭即清空</p>
+        <p>⚠️ 免责声明：请勿发布造谣、违法、泄露客户隐私内容，发言需遵守法律法规</p>
+    </div>
+
+    <script>
+        // 切换标签
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.content-box');
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('show'));
+            tabs[index].classList.add('active');
+            contents[index].classList.add('show');
+        }
+
+        // 提交吐槽（本地临时展示，刷新消失）
+        function submitTucao() {
+            const input = document.getElementById('tucaoInput');
+            const list = document.getElementById('tucaoList');
+            const content = input.value.trim();
+            if (!content) return;
+
+            const item = document.createElement('div');
+            item.className = 'tucao-item';
+            const time = new Date().toLocaleString();
+            item.innerHTML = `${content}<div class="time">${time} · 匿名用户</div>`;
+            list.prepend(item);
+            input.value = '';
+        }
+
+        // 复制举报内容
+        function copyReport() {
+            const type = document.getElementById('reportType').value;
+            const content = document.getElementById('reportInput').value.trim();
+            if (!content) {
+                alert('请填写举报内容');
+                return;
+            }
+            const text = `【举报类型】${type || '未选择'}\n【举报内容】\n${content}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('复制成功！请自行粘贴到安全渠道提交');
+            }).catch(() => {
+                alert('复制失败，请手动复制');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -3,38 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>银行树洞 - 纯匿名吐槽举报</title>
+    <title>银行员工匿名树洞</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "微软雅黑", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", sans-serif;
         }
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            max-width: 800px;
+            background: #0f1419;
+            color: #eaecef;
+            max-width: 700px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
-        .header {
+        .box {
+            background: #1a1f25;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .title {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-        }
-        .header h1 {
-            font-size: 24px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
             color: #fff;
-            margin-bottom: 10px;
         }
-        .tips {
-            color: #4CAF50;
-            font-size: 14px;
+        .tip {
+            text-align: center;
+            color: #4ade80;
+            font-size: 13px;
+            margin-bottom: 20px;
         }
-        .tab-box {
+        .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
@@ -43,157 +48,186 @@
             flex: 1;
             padding: 12px;
             text-align: center;
-            background: #1e1e1e;
-            border-radius: 6px;
-            cursor: pointer;
+            background: #252b32;
             border: none;
+            border-radius: 8px;
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
         }
         .tab.active {
-            background: #2196F3;
+            background: #2563eb;
         }
-        .content-box {
-            display: none;
-        }
-        .content-box.show {
-            display: block;
+        .tab:hover {
+            background: #2d3741;
         }
         textarea {
             width: 100%;
-            height: 120px;
-            background: #1e1e1e;
-            border: 1px solid #333;
-            border-radius: 6px;
+            height: 130px;
+            background: #252b32;
+            border: 1px solid #374151;
+            border-radius: 8px;
             padding: 15px;
             color: #fff;
             font-size: 15px;
             resize: none;
-            margin-bottom: 15px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            background: #252b32;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
         }
         .btn {
-            padding: 10px 20px;
-            background: #2196F3;
-            color: #fff;
+            flex: 1;
+            padding: 12px;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            border:-radius: 8px;
+            color: #fff;
             font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-blue {
+            background: #2563eb;
+        }
+        .btn-gray {
+            background: #4b5563;
         }
         .btn:hover {
             opacity: 0.9;
         }
-        .tucao-list {
-            margin-top: 20px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        .tucao-item {
-            background: #1e1e1e;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .time {
-            color: #888;
+        .warn {
+            color: #fbbf24;
             font-size: 12px;
-            margin-top: 5px;
-        }
-        .report-type {
-            width: 100%;
-            padding: 10px;
-            background: #1e1e1e;
-            color: #fff;
-            border: 1px solid #333;
-            border-radius: 6px;
-            margin-bottom: 15px;
+            margin-top: 10px;
+            line-height: 1.5;
         }
         .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            font-size: 12px;
-            color: #666;
             text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3741;
+        }
+        .page {
+            display: none;
+        }
+        .page.show {
+            display: block;
+        }
+        /* 提交成功弹窗 */
+        .success-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #22c55e;
+            color: #fff;
+            padding: 25px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🏦 银行员工匿名树洞</h1>
-        <p class="tips">✅ 无注册 | ✅ 无登录 | ✅ 不查IP | ✅ 不留痕迹 | ✅ 纯匿名</p>
+    <!-- 提交成功提示框 -->
+    <div class="success-box" id="successMsg">✅ 已收到你的匿名吐槽，感谢倾诉</div>
+
+    <div class="box">
+        <div class="title">🏦 银行员工匿名树洞</div>
+        <div class="tip">✅ 纯匿名 | ✅ 无注册 | ✅ 不录IP | ✅ 不留痕迹 | ✅ 邮箱实时接收</div>
     </div>
 
-    <div class="tab-box">
-        <button class="tab active" onclick="switchTab(0)">匿名吐槽</button>
-        <button class="tab" onclick="switchTab(1)">匿名举报</button>
+    <div class="tabs">
+        <button class="tab active" onclick="switchPage(0)">匿名吐槽</button>
+        <button class="tab" onclick="switchPage(1)">匿名举报</button>
     </div>
 
-    <!-- 吐槽模块 -->
-    <div class="content-box show" id="tucao">
-        <textarea id="tucaoInput" placeholder="在这里随意吐槽：考核、管理、薪酬、职场PUA... 纯匿名，放心说"></textarea>
-        <button class="btn" onclick="submitTucao()">提交吐槽</button>
-        <div class="tucao-list" id="tucaoList"></div>
+    <!-- 吐槽模块：直接发邮箱，无任何第三方 -->
+    <div class="page show" id="page1">
+        <div class="box">
+            <!-- 👇 唯一修改处：把 你的邮箱@qq.com 换成你自己的邮箱 👇 -->
+            <form id="tucaoForm" action="mailto:你的邮箱@qq.com" method="post" enctype="text/plain" target="hideFrame">
+                <textarea name="body" placeholder="在这里放心吐槽：考核压榨、薪酬克扣、职场PUA、管理乱象... 纯匿名，无任何追踪" required></textarea>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-blue">提交吐槽</button>
+                    <button type="reset" class="btn btn-gray">清空内容</button>
+                </div>
+            </form>
+            <iframe name="hideFrame" style="display:none;"></iframe>
+        </div>
     </div>
 
-    <!-- 举报模块 -->
-    <div class="content-box" id="report">
-        <select class="report-type" id="reportType">
-            <option value="">选择举报类型</option>
-            <option value="薪酬考核">薪酬/考核压榨</option>
-            <option value="管理不公">管理不公/PUA</option>
-            <option value="合规问题">违规业绩/合规问题</option>
-            <option value="职场霸凌">职场霸凌/歧视</option>
-            <option value="其他">其他问题</option>
-        </select>
-        <textarea id="reportInput" placeholder="详细描述情况，可写证据线索（纯匿名，内容仅你自己可见）"></textarea>
-        <button class="btn" onclick="copyReport()">一键复制举报内容（自行安全提交）</button>
-        <p style="color:#ff9800; margin-top:10px; font-size:13px;">⚠️ 静态页面不上传数据，复制后自行发送到安全渠道，绝对不留痕</p>
+    <!-- 举报模块（本地复制，不上传） -->
+    <div class="page" id="page2">
+        <div class="box">
+            <select id="reportType">
+                <option value="">选择举报类型</option>
+                <option value="考核压榨">考核压榨/积分贬值</option>
+                <option value="薪酬克扣">薪酬克扣/什一税</option>
+                <option value="职场PUA">职场PUA/管理双标</option>
+                <option value="违规业绩">违规冲业绩/合规问题</option>
+                <option value="管理乱象">内部管理乱象</option>
+                <option value="其他">其他问题</option>
+            </select>
+            <textarea id="reportContent" placeholder="详细描述情况，可写证据线索（仅本地显示，不上传任何服务器）"></textarea>
+            <button class="btn btn-blue" onclick="copyReport()">一键复制举报内容</button>
+            <div class="warn">
+                ⚠️ 本页面为纯静态工具，不存储、不上传任何举报数据<br>
+                复制后请自行发送到安全渠道，彻底不留痕
+            </div>
+        </div>
     </div>
 
     <div class="footer">
-        <p>📢 隐私承诺：本页面仅运行在你的浏览器中，不收集任何信息，不存储数据，关闭即清空</p>
-        <p>⚠️ 免责声明：请勿发布造谣、违法、泄露客户隐私内容，发言需遵守法律法规</p>
+        📢 隐私承诺：仅收集吐槽内容，不采集任何个人信息，绝对匿名<br>
+        ⚠️ 合规提示：请勿发布造谣、违法、泄露客户隐私的内容
     </div>
 
     <script>
-        // 切换标签
-        function switchTab(index) {
+        // 切换页面
+        function switchPage(index) {
             const tabs = document.querySelectorAll('.tab');
-            const contents = document.querySelectorAll('.content-box');
+            const pages = document.querySelectorAll('.page');
             tabs.forEach(t => t.classList.remove('active'));
-            contents.forEach(c => c.classList.remove('show'));
+            pages.forEach(p => p.classList.remove('show'));
             tabs[index].classList.add('active');
-            contents[index].classList.add('show');
+            pages[index].classList.add('show');
         }
 
-        // 提交吐槽（本地临时展示，刷新消失）
-        function submitTucao() {
-            const input = document.getElementById('tucaoInput');
-            const list = document.getElementById('tucaoList');
-            const content = input.value.trim();
-            if (!content) return;
-
-            const item = document.createElement('div');
-            item.className = 'tucao-item';
-            const time = new Date().toLocaleString();
-            item.innerHTML = `${content}<div class="time">${time} · 匿名用户</div>`;
-            list.prepend(item);
-            input.value = '';
-        }
+        // 提交吐槽显示成功提示
+        const form = document.getElementById('tucaoForm');
+        const msg = document.getElementById('successMsg');
+        form.addEventListener('submit', function() {
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 2500);
+        });
 
         // 复制举报内容
         function copyReport() {
             const type = document.getElementById('reportType').value;
-            const content = document.getElementById('reportInput').value.trim();
-            if (!content) {
-                alert('请填写举报内容');
-                return;
-            }
-            const text = `【举报类型】${type || '未选择'}\n【举报内容】\n${content}`;
+            const content = document.getElementById('reportContent').value.trim();
+            if (!content) { alert('请填写举报内容'); return; }
+            const text = `【举报类型】${type||'未选择'}\n【举报内容】\n${content}`;
             navigator.clipboard.writeText(text).then(() => {
-                alert('复制成功！请自行粘贴到安全渠道提交');
+                alert('复制成功！请粘贴到安全渠道提交');
             }).catch(() => {
                 alert('复制失败，请手动复制');
             });

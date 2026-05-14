@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", sans-serif;
+            font-family: "微软雅黑", sans-serif;
         }
         body {
             background: #0f1419;
@@ -17,74 +17,40 @@
             max-width: 700px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.7;
         }
-        .box {
+        .container {
             background: #1a1f25;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 25px;
+            margin: 10px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .title {
             text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-size: 24px;
             color: #fff;
+            margin-bottom: 8px;
         }
         .tip {
             text-align: center;
             color: #4ade80;
-            font-size: 13px;
+            font-size: 14px;
             margin-bottom: 20px;
         }
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
+        select, textarea {
+            width: 100%;
             background: #252b32;
             border: none;
             border-radius: 8px;
+            padding: 14px;
             color: #fff;
             font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .tab.active {
-            background: #2563eb;
-        }
-        .tab:hover {
-            background: #2d3741;
+            margin-bottom: 15px;
+            outline: none;
         }
         textarea {
-            width: 100%;
-            height: 130px;
-            background: #252b32;
-            border: 1px solid #374151;
-            border-radius: 8px;
-            padding: 15px;
-            color: #fff;
-            font-size: 15px;
+            height: 150px;
             resize: none;
-            outline: none;
-            margin-bottom: 12px;
-        }
-        select {
-            width: 100%;
-            padding: 12px;
-            background: #252b32;
-            border: 1px solid #374151;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 15px;
-            outline: none;
-            margin-bottom: 12px;
         }
         .btn-group {
             display: flex;
@@ -92,45 +58,21 @@
         }
         .btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border:-radius: 8px;
+            border-radius: 8px;
             color: #fff;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .btn-blue {
+        .submit {
             background: #2563eb;
         }
-        .btn-gray {
+        .reset {
             background: #4b5563;
         }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .warn {
-            color: #fbbf24;
-            font-size: 12px;
-            margin-top: 10px;
-            line-height: 1.5;
-        }
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #2d3741;
-        }
-        .page {
-            display: none;
-        }
-        .page.show {
-            display: block;
-        }
-        /* 提交成功弹窗 */
-        .success-box {
+        /* 成功提示弹窗 */
+        .success {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -139,47 +81,33 @@
             color: #fff;
             padding: 25px 40px;
             border-radius: 10px;
-            font-size: 16px;
             z-index: 9999;
             display: none;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
         }
     </style>
 </head>
 <body>
-    <!-- 提交成功提示框 -->
-    <div class="success-box" id="successMsg">✅ 已收到你的匿名吐槽，感谢倾诉</div>
+    <div class="success" id="successTip">✅ 匿名吐槽已收到，感谢倾诉</div>
 
-    <div class="box">
+    <div class="container">
         <div class="title">🏦 银行员工匿名树洞</div>
-        <div class="tip">✅ 纯匿名 | ✅ 无注册 | ✅ 不录IP | ✅ 不留痕迹 | ✅ 邮箱实时接收</div>
+        <div class="tip">✅ 纯匿名 | ✅ 无注册 | ✅ 不录IP | ✅ 邮箱实时接收</div>
     </div>
 
-    <div class="tabs">
-        <button class="tab active" onclick="switchPage(0)">匿名吐槽</button>
-        <button class="tab" onclick="switchPage(1)">匿名举报</button>
-    </div>
-
-    <!-- 吐槽模块：直接发邮箱，无任何第三方 -->
-    <div class="page show" id="page1">
-        <div class="box">
-            <!-- 👇 唯一修改处：把 你的邮箱@qq.com 换成你自己的邮箱 👇 -->
-            <form id="tucaoForm" action="mailto:1015589311@qq.com" method="post" enctype="text/plain" target="hideFrame">
-                <textarea name="body" placeholder="在这里放心吐槽：考核压榨、薪酬克扣、职场PUA、管理乱象... 纯匿名，无任何追踪" required></textarea>
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-blue">提交吐槽</button>
-                    <button type="reset" class="btn btn-gray">清空内容</button>
-                </div>
-            </form>
-            <iframe name="hideFrame" style="display:none;"></iframe>
-        </div>
-    </div>
-
-    <!-- 举报模块（本地复制，不上传） -->
-    <div class="page" id="page2">
-        <div class="box">
-            <select id="reportType">
-                <option value="">选择举报类型</option>
+    <div class="container">
+        <!-- 👇 唯一修改：替换成你的问卷星链接 👇 -->
+        <form action="https://www.wjx.cn/vm/xxxxxxx.aspx" method="post" target="hideFrame" id="form">
+            <!-- 吐槽分类 -->
+            <select name="q1" required>
+                <option value="">选择吐槽类型</option>
                 <option value="考核压榨">考核压榨/积分贬值</option>
                 <option value="薪酬克扣">薪酬克扣/什一税</option>
                 <option value="职场PUA">职场PUA/管理双标</option>
@@ -187,51 +115,30 @@
                 <option value="管理乱象">内部管理乱象</option>
                 <option value="其他">其他问题</option>
             </select>
-            <textarea id="reportContent" placeholder="详细描述情况，可写证据线索（仅本地显示，不上传任何服务器）"></textarea>
-            <button class="btn btn-blue" onclick="copyReport()">一键复制举报内容</button>
-            <div class="warn">
-                ⚠️ 本页面为纯静态工具，不存储、不上传任何举报数据<br>
-                复制后请自行发送到安全渠道，彻底不留痕
+
+            <!-- 吐槽内容 -->
+            <textarea name="q2" placeholder="在这里放心吐槽，纯匿名、无任何追踪" required></textarea>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn submit">提交吐槽</button>
+                <button type="reset" class="btn reset">清空内容</button>
             </div>
-        </div>
+        </form>
+        <iframe name="hideFrame" style="display:none;"></iframe>
     </div>
 
     <div class="footer">
-        📢 隐私承诺：仅收集吐槽内容，不采集任何个人信息，绝对匿名<br>
-        ⚠️ 合规提示：请勿发布造谣、违法、泄露客户隐私的内容
+        📢 隐私承诺：仅收集吐槽内容+分类，不采集任何个人信息，绝对匿名<br>
+        ⚠️ 合规提示：请勿发布造谣、违法、泄露隐私内容
     </div>
 
     <script>
-        // 切换页面
-        function switchPage(index) {
-            const tabs = document.querySelectorAll('.tab');
-            const pages = document.querySelectorAll('.page');
-            tabs.forEach(t => t.classList.remove('active'));
-            pages.forEach(p => p.classList.remove('show'));
-            tabs[index].classList.add('active');
-            pages[index].classList.add('show');
-        }
-
-        // 提交吐槽显示成功提示
-        const form = document.getElementById('tucaoForm');
-        const msg = document.getElementById('successMsg');
-        form.addEventListener('submit', function() {
-            msg.style.display = 'block';
-            setTimeout(() => msg.style.display = 'none', 2500);
+        const form = document.getElementById('form');
+        const tip = document.getElementById('successTip');
+        form.addEventListener('submit', () => {
+            tip.style.display = 'block';
+            setTimeout(() => tip.style.display = 'none', 2500);
         });
-
-        // 复制举报内容
-        function copyReport() {
-            const type = document.getElementById('reportType').value;
-            const content = document.getElementById('reportContent').value.trim();
-            if (!content) { alert('请填写举报内容'); return; }
-            const text = `【举报类型】${type||'未选择'}\n【举报内容】\n${content}`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('复制成功！请粘贴到安全渠道提交');
-            }).catch(() => {
-                alert('复制失败，请手动复制');
-            });
-        }
     </script>
 </body>
 </html>
